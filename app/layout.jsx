@@ -1,7 +1,6 @@
 import { Rubik, Ubuntu } from "next/font/google";
 import "./globals.sass";
 import { Toaster } from "sonner";
-import Authentication from "./Authentication";
 
 const rubik = Rubik({
   variable: "--font-rubik",
@@ -30,10 +29,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${rubik.variable} ${ubuntu.variable}`} style={theme.default}>
-        <Authentication>
-          <Toaster position="top-center" richColors />
-          {children}
-        </Authentication>
+        <Toaster position="top-center" richColors />
+        {children}
       </body>
     </html>
   );

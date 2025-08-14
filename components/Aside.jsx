@@ -1,14 +1,55 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Logo from '@/app/Logo'
-import { ChefHat, Cookie, Earth, Headset, HeartHandshake, Palette, PanelLeftClose, QrCode, ReceiptText, Stamp, SunMoon, TabletSmartphone, TvMinimal, User, Wallet } from 'lucide-react'
+import {
+    ChefHat, Cookie, Earth, Headset, HeartHandshake, Loader,
+    Palette, PanelLeftClose, QrCode, ReceiptText, Stamp, SunMoon,
+    TabletSmartphone, TvMinimal, User, Wallet
+} from 'lucide-react'
+import { useStore } from '@/useStore'
+import { usePathname } from 'next/navigation'
 
 const Aside = ({ sass }) => {
+    const pathname = usePathname();
+    const { route, setRoute } = useStore();
+    const [routing, setRouting] = useState("");
+
+    useEffect(() => {
+        pathname !== route && setRouting(route);
+    }, [pathname, route]);
+
+    useEffect(() => {
+        setRouting("");
+    }, [pathname]);
+
+    useEffect(() => {
+        setRoute(pathname);
+    }, []);
+
+    const makeLink = (href, icon, label) => (
+        <li>
+            <Link
+                href={href}
+                onClick={(e) => {
+                    if (href === route) {
+                        e.preventDefault();
+                        return;
+                    }
+                    setRoute(href);
+                }}
+                className={route === href ? sass.active : ""}
+            >
+                {routing === href ? <Loader className={sass.routing} /> : icon}
+                <span>{label}</span>
+            </Link>
+        </li>
+    );
+
     return (
         <aside>
             <div className={sass.header}>
-                <Link href="/">
+                <Link href="/dashboard/">
                     <Logo />
                     <h2>Mr Menu</h2>
                 </Link>
@@ -18,37 +59,45 @@ const Aside = ({ sass }) => {
             </div>
             <nav>
                 <ul>
-                    <li><span className={sass.heading}>Home</span></li>
+                    <li className={sass.sticky}>
+                        <span className={sass.heading}>Home</span>
+                    </li>
                     <div className={sass.group}>
-                        <li><Link href="/"><TvMinimal /><span>Dashboard</span></Link></li>
-                        <li><Link href="/categories"><ChefHat /><span>Categories</span></Link></li>
-                        <li><Link href="/items"><Cookie /><span>Items</span></Link></li>
-                        <li><Link href="/deals"><HeartHandshake /><span>Deals</span></Link></li>
+                        {makeLink("/dashboard", <TvMinimal />, "Dashboard")}
+                        {makeLink("/dashboard/categories", <ChefHat />, "Categories")}
+                        {makeLink("/dashboard/items", <Cookie />, "Items")}
+                        {makeLink("/dashboard/deals", <HeartHandshake />, "Deals")}
                     </div>
                 </ul>
                 <ul>
-                    <li><span className={sass.heading}>Customization</span></li>
+                    <li className={sass.sticky}>
+                        <span className={sass.heading}>Customization</span>
+                    </li>
                     <div className={sass.group}>
-                        <li><Link href="/brand-settings"><Earth /><span>Brand Settings</span></Link></li>
-                        <li><Link href="/menu-templates"><QrCode /><span>Print Templates</span></Link></li>
-                        <li><Link href="/restaurant-details"><ReceiptText /><span>Restaurant Details</span></Link></li>
-                        <li><Link href="/menu-theme"><Palette /><span>Menu Theme</span></Link></li>
+                        {makeLink("/dashboard/brand-settings", <Earth />, "Brand Settings")}
+                        {makeLink("/dashboard/menu-templates", <QrCode />, "Print Templates")}
+                        {makeLink("/dashboard/restaurant-details", <ReceiptText />, "Restaurant Details")}
+                        {makeLink("/dashboard/menu-theme", <Palette />, "Menu Theme")}
                     </div>
                 </ul>
                 <ul>
-                    <li><span className={sass.heading}>Billing</span></li>
+                    <li className={sass.sticky}>
+                        <span className={sass.heading}>Billing</span>
+                    </li>
                     <div className={sass.group}>
-                        <li><Link href="/subscription"><Wallet /><span>Subscription</span></Link></li>
-                        <li><Link href="/purchase"><Stamp /><span>Purchase</span></Link></li>
+                        {makeLink("/dashboard/subscription", <Wallet />, "Subscription")}
+                        {makeLink("/dashboard/purchase", <Stamp />, "Purchase")}
                     </div>
                 </ul>
                 <ul>
-                    <li><span className={sass.heading}>Settings</span></li>
+                    <li className={sass.sticky}>
+                        <span className={sass.heading}>Settings</span>
+                    </li>
                     <div className={sass.group}>
-                        <li><Link href="/dashboard-theme"><SunMoon /><span>Dashboard Theme</span></Link></li>
-                        <li><Link href="/login-devices"><TabletSmartphone /><span>Login Devices</span></Link></li>
-                        <li><Link href="/account-details"><User /><span>Account Details</span></Link></li>
-                        <li><Link href="/support"><Headset /><span>Support</span></Link></li>
+                        {makeLink("/dashboard/dashboard-theme", <SunMoon />, "Dashboard Theme")}
+                        {makeLink("/dashboard/login-devices", <TabletSmartphone />, "Login Devices")}
+                        {makeLink("/dashboard/account-details", <User />, "Account Details")}
+                        {makeLink("/dashboard/support", <Headset />, "Support")}
                     </div>
                 </ul>
             </nav>

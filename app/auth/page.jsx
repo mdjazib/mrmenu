@@ -34,7 +34,6 @@ const page = () => {
                     formdata.append("phase", state.phase);
                     const { data: response } = await axios.post("/api/auth", formdata, { headers: { "Content-Type": "multipart/form-data" } });
                     setLoading(false);
-                    console.log(response);
                     if (response.status) {
                         toast.success(response.msg);
                     } else {

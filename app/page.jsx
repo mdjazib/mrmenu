@@ -1,15 +1,5 @@
-"use client"
-import React from 'react'
-import sass from "./app.module.sass"
-import Aside from '@/components/Aside'
+import { redirect } from 'next/navigation';
 
-const page = () => {
-  return (
-    <div className={sass.cpanel}>
-      <Aside sass={sass} />
-      <main></main>
-    </div>
-  )
+export default function Page() {
+    redirect('/dashboard');
 }
-
-export default page

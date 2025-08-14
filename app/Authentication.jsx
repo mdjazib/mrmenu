@@ -21,7 +21,7 @@ const Authentication = ({ children }) => {
         })()
     }, []);
     useEffect(() => {
-        if (pathname === "/" && fingerprint !== "") {
+        if (pathname.startsWith("/dashboard") && fingerprint !== "") {
             document.addEventListener("visibilitychange", () => { authenticaiton() });
             document.addEventListener("mouseenter", () => { authenticaiton() })
             const authenticaiton = async () => {
@@ -33,7 +33,7 @@ const Authentication = ({ children }) => {
             authenticaiton();
         }
     }, [fingerprint]);
-    return appHide && pathname === "/" ?
+    return appHide && pathname.startsWith("/dashboard") ?
         <div className={sass.app}>
             <div className={sass.splash}>
                 <Logo />

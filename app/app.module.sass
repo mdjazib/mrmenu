@@ -114,12 +114,20 @@ $ubuntu: var(--font-ubuntu)
         @include textColor()
         @include flex(flex-start,flex-start,row,0px)
         height: 100%
+        @media (max-width:800px)
+            scroll-snap-type: x mandatory
+            overflow-x: overlay
+            &::-webkit-scrollbar
+                display: none
+            main,aside
+                scroll-snap-align: center
+                min-width: 100vw !important
         main,aside
             height: 100%
         aside
             @include baseBackground(.5)
             min-width: 300px
-            padding: 20px
+            padding: 20px 20px 0px 20px
             @include flex(flex-start,flex-start,column,14px)
             .header
                 width: 100%
@@ -149,18 +157,29 @@ $ubuntu: var(--font-ubuntu)
             nav
                 width: 100%
                 @include flex(flex-start,flex-start,column,8px)
+                overflow-y: overlay
+                padding-bottom: 20px
+                &::-webkit-scrollbar
+                    display: none
                 ul
                     width: 100%
                     @include flex(flex-start,flex-start,column,8px)
                     .group
-                        @include flex(flex-start,flex-start,column,0px)
+                        @include flex(flex-start,flex-start,column,1px)
                         width: 100%
+                    .sticky
+                        position: sticky
+                        top: 0px
+                        @include baseBackground(.5)
                     li
                         width: 100%
                         list-style: none
                         .heading
                             font-size: 10px
                             @include textColor(-40)
+                        .active
+                            @include baseBackground(2)
+                            @include textColor()
                         a
                             width: 100%
                             text-decoration: none
@@ -168,6 +187,11 @@ $ubuntu: var(--font-ubuntu)
                             @include textColor(-20)
                             padding: 10px
                             border-radius: 5px
+                            .routing
+                                animation: routing .8s linear infinite
+                                @keyframes routing
+                                    100%
+                                        rotate: 360deg
                             svg
                                 height: 16px
                                 width: 16px
