@@ -1,0 +1,180 @@
+$rubik: var(--font-rubik)
+$ubuntu: var(--font-ubuntu)
+
+@mixin flex($j: center,$a: center,$d: row,$g: 0px)
+    display: flex
+    justify-content: $j
+    align-items: $a
+    flex-direction: $d
+    gap: $g
+
+@mixin baseBackground($l:0)
+    background-color: lch(from var(--base-color) calc(l + $l) c h) !important
+
+@mixin baseFill($l:0)
+    fill: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin baseStroke($l:0)
+    stroke: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin baseColor($l:0)
+    color: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin baseBorder($l:0)
+    border-color: lch(from var(--base-color) calc(l + $l) c h) !important
+
+@mixin textBackground($l:0)
+    background-color: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin textFill($l:0)
+    fill: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin textStroke($l:0)
+    stroke: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin textColor($l:0)
+    color: lch(from var(--text-color) calc(l + $l) c h) !important
+
+@mixin textBorder($l:0)
+    border-color: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin accentBackground($l:0)
+    background-color: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentFill($l:0)
+    fill: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentStroke($l:0)
+    stroke: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentColor($l:0)
+    color: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentBorder($l:0)
+    border-color: lch(from var(--accent-color) calc(l + $l) c h)
+
+.navTabsTooltip
+    border: 1px solid
+    border-radius: 100px !important
+    @include baseBackground(-.1)
+    @include baseBorder(-10)
+    @include textColor()
+    z-index: 2 !important
+    div
+        display: none
+
+.app
+    transition: .2s ease
+    width: 100%
+    height: 100svh
+    @include baseBackground()
+    .splash
+        @include flex($d:column,$g:10px)
+        height: 100%
+        width: 100%
+        svg
+            height: max-content
+            width: 25px
+            @include textFill()
+        .loading
+            width: 100%
+            max-width: 250px
+            height: 4px
+            border-radius: 100px
+            @include baseBackground(4)
+            .ba
+                width: 5%
+                border-radius: inherit
+                height: 100%
+                @include baseBackground(16)
+                animation: splashLoading 10s linear 1 forwards
+                @keyframes splashLoading
+                    0%
+                        width: 5%
+                    100%
+                        width: 90%
+            .bar
+                border-radius: inherit
+                height: 100%
+                @include baseBackground(16)
+                animation: splashLoadingEnd 1s linear 1 forwards
+                @keyframes splashLoadingEnd
+                    0%
+                        width: 20%
+                    100%
+                        width: 100%
+        h2
+            @include textColor()
+            font-size: 18px
+        p
+            @include textColor(-20)
+            opacity: .6
+            font-size: 12px
+    .cpanel
+        @include textColor()
+        @include flex(flex-start,flex-start,row,0px)
+        height: 100%
+        main,aside
+            height: 100%
+        aside
+            @include baseBackground(.5)
+            min-width: 300px
+            padding: 20px
+            @include flex(flex-start,flex-start,column,14px)
+            .header
+                width: 100%
+                @include flex(space-between,center,row,10px)
+                a
+                    @include flex(flex-start,center,row,10px)
+                    text-decoration: none
+                    svg
+                        @include textFill()
+                        width: 20px
+                        height: 20px
+                    h2
+                        @include textColor()
+                        font-size: 16px
+                .btn
+                    width: 30px
+                    height: 30px
+                    border-radius: 4px
+                    cursor: pointer
+                    @include flex(center,center,row,0px)
+                    svg
+                        width: 18px
+                        height: 18px
+                        @include textStroke(-20)
+                    &:hover
+                        @include baseBackground(8)
+            nav
+                width: 100%
+                @include flex(flex-start,flex-start,column,8px)
+                ul
+                    width: 100%
+                    @include flex(flex-start,flex-start,column,8px)
+                    .group
+                        @include flex(flex-start,flex-start,column,0px)
+                        width: 100%
+                    li
+                        width: 100%
+                        list-style: none
+                        .heading
+                            font-size: 10px
+                            @include textColor(-40)
+                        a
+                            width: 100%
+                            text-decoration: none
+                            @include flex(flex-start,center,row,8px)
+                            @include textColor(-20)
+                            padding: 10px
+                            border-radius: 5px
+                            svg
+                                height: 16px
+                                width: 16px
+                            span
+                                font-size: 12px
+                            &:hover
+                                @include baseBackground(2)
+                                @include textColor()
+        main
+            width: 100%

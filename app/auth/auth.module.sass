@@ -1,0 +1,173 @@
+$rubik: var(--font-rubik)
+$ubuntu: var(--font-ubuntu)
+
+@mixin flex($j: center,$a: center,$d: row,$g: 0px)
+    display: flex
+    justify-content: $j
+    align-items: $a
+    flex-direction: $d
+    gap: $g
+
+@mixin baseBackground($l:0)
+    background-color: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin baseFill($l:0)
+    fill: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin baseStroke($l:0)
+    stroke: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin baseColor($l:0)
+    color: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin baseBorder($l:0)
+    border-color: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin textBackground($l:0)
+    background-color: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin textFill($l:0)
+    fill: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin textStroke($l:0)
+    stroke: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin textColor($l:0)
+    color: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin textBorder($l:0)
+    border-color: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin accentBackground($l:0)
+    background-color: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentFill($l:0)
+    fill: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentStroke($l:0)
+    stroke: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentColor($l:0)
+    color: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentBorder($l:0)
+    border-color: lch(from var(--accent-color) calc(l + $l) c h)
+
+.auth
+    height: 100svh
+    width: 100%
+    @include baseBackground()
+    @include flex($d:column,$g:16px)
+    user-select: none
+    padding: 25px
+    .logo
+        width: 50px
+        height: 50px
+        @include textFill()
+    .header
+        @include flex($d:column,$g:5px)
+        @include textColor()
+        h2
+            font-size: 18px
+            font-family: $rubik
+        p
+            @include textColor(-30)
+            font-size: 12px
+    form
+        width: 100%
+        max-width: 380px
+        @include flex($d:column,$g:10px)
+        input
+            border-radius: 100px
+            width: 100%
+            outline: none
+            border: none
+            padding: 14px 22px
+            border: 1px solid
+            &::selection
+                @include baseColor()
+                @include accentBackground()
+            &[type=submit]
+                @include accentBackground()
+                @include baseColor()
+                font-weight: 600
+                cursor: pointer
+            &[disabled]
+                @include textBackground(-50)
+                border-color: unset
+                cursor: default
+        .loader,.redirecting
+            height: 44.8px
+            width: 100%
+            border-radius: 100px
+            @include flex()
+            @include baseBackground(4)
+            svg
+                animation: loading .8s linear infinite
+                fill: none
+                @include textStroke(-10)
+                @keyframes loading
+                    100%
+                        rotate: 360deg
+        .redirecting
+            gap: 6px
+            font-size: 12px
+            position: relative
+            border: 1px solid
+            @include baseBorder(6)
+            b,span
+                z-index: 1
+                @include textColor(-20)
+            .timeout
+                position: absolute
+                height: calc(100% - 8px)
+                width: calc(100% - 8px)
+                left: 4px
+                top: 4px
+                bottom: 4px
+                right: 4px
+                @include baseBackground(12)
+                border-radius: inherit
+                animation: timeout 5s linear 1
+                animation-fill-mode: forwards
+                @keyframes timeout
+                    100%
+                        width: 9.5%
+        .input
+            width: 100%
+            position: relative
+            input
+                background-color: transparent
+                @include baseBorder(20)
+                @include textColor()
+                &::placeholder
+                    color: transparent
+                &:focus
+                    @include accentBorder()
+                    ~p
+                        top: 0px
+                        left: 30px
+                        font-size: 10px
+                        padding: 0px 5px
+                        @include baseBackground()
+                        @include accentColor()
+                &[readonly]
+                    @include baseBorder(12)
+                    ~p
+                        @include textColor(-60)
+                &:not(:placeholder-shown)
+                    ~p
+                        top: 0px
+                        left: 30px
+                        font-size: 10px
+                        padding: 0px 5px
+                        @include baseBackground()
+            p
+                transition: .2s ease
+                position: absolute
+                left: 20px
+                top: 50%
+                pointer-events: none
+                transform: translateY(-50%)
+                @include textColor(-50)
+                font-size: 14px
