@@ -16,35 +16,55 @@ const Aside = ({ sass }) => {
     const [routing, setRouting] = useState("");
 
     useEffect(() => {
-        pathname !== route && setRouting(route);
+        pathname !== route.href && setRouting(route.href);
     }, [pathname, route]);
 
     useEffect(() => {
         setRouting("");
+        const allItems = menuGroups.flatMap(group => group.items);
+        const match = allItems.find(item => item.href === pathname);
+        setRoute({
+            href: pathname,
+            title: match ? match.label : ""
+        });
     }, [pathname]);
 
-    useEffect(() => {
-        setRoute(pathname);
-    }, []);
-
-    const makeLink = (href, icon, label) => (
-        <li>
-            <Link
-                href={href}
-                onClick={(e) => {
-                    if (href === route) {
-                        e.preventDefault();
-                        return;
-                    }
-                    setRoute(href);
-                }}
-                className={route === href ? sass.active : ""}
-            >
-                {routing === href ? <Loader className={sass.routing} /> : icon}
-                <span>{label}</span>
-            </Link>
-        </li>
-    );
+    const menuGroups = [
+        {
+            heading: "Home",
+            items: [
+                { href: "/dashboard", icon: <TvMinimal />, label: "Dashboard" },
+                { href: "/dashboard/categories", icon: <ChefHat />, label: "Categories" },
+                { href: "/dashboard/items", icon: <Cookie />, label: "Items" },
+                { href: "/dashboard/deals", icon: <HeartHandshake />, label: "Deals" }
+            ]
+        },
+        {
+            heading: "Customization",
+            items: [
+                { href: "/dashboard/brand-settings", icon: <Earth />, label: "Brand Settings" },
+                { href: "/dashboard/menu-templates", icon: <QrCode />, label: "Print QR Templates" },
+                { href: "/dashboard/restaurant-details", icon: <ReceiptText />, label: "Restaurant Details" },
+                { href: "/dashboard/menu-theme", icon: <Palette />, label: "Menu Theme" }
+            ]
+        },
+        {
+            heading: "Billing",
+            items: [
+                { href: "/dashboard/subscription", icon: <Wallet />, label: "Subscription" },
+                { href: "/dashboard/purchase", icon: <Stamp />, label: "Purchase" }
+            ]
+        },
+        {
+            heading: "Settings",
+            items: [
+                { href: "/dashboard/dashboard-theme", icon: <SunMoon />, label: "Dashboard Theme" },
+                { href: "/dashboard/login-devices", icon: <TabletSmartphone />, label: "Login Devices" },
+                { href: "/dashboard/account-details", icon: <User />, label: "Account Details" },
+                { href: "/dashboard/support", icon: <Headset />, label: "Support" }
+            ]
+        }
+    ];
 
     return (
         <aside>
@@ -58,48 +78,33 @@ const Aside = ({ sass }) => {
                 </div>
             </div>
             <nav>
-                <ul>
-                    <li className={sass.sticky}>
-                        <span className={sass.heading}>Home</span>
-                    </li>
-                    <div className={sass.group}>
-                        {makeLink("/dashboard", <TvMinimal />, "Dashboard")}
-                        {makeLink("/dashboard/categories", <ChefHat />, "Categories")}
-                        {makeLink("/dashboard/items", <Cookie />, "Items")}
-                        {makeLink("/dashboard/deals", <HeartHandshake />, "Deals")}
-                    </div>
-                </ul>
-                <ul>
-                    <li className={sass.sticky}>
-                        <span className={sass.heading}>Customization</span>
-                    </li>
-                    <div className={sass.group}>
-                        {makeLink("/dashboard/brand-settings", <Earth />, "Brand Settings")}
-                        {makeLink("/dashboard/menu-templates", <QrCode />, "Print Templates")}
-                        {makeLink("/dashboard/restaurant-details", <ReceiptText />, "Restaurant Details")}
-                        {makeLink("/dashboard/menu-theme", <Palette />, "Menu Theme")}
-                    </div>
-                </ul>
-                <ul>
-                    <li className={sass.sticky}>
-                        <span className={sass.heading}>Billing</span>
-                    </li>
-                    <div className={sass.group}>
-                        {makeLink("/dashboard/subscription", <Wallet />, "Subscription")}
-                        {makeLink("/dashboard/purchase", <Stamp />, "Purchase")}
-                    </div>
-                </ul>
-                <ul>
-                    <li className={sass.sticky}>
-                        <span className={sass.heading}>Settings</span>
-                    </li>
-                    <div className={sass.group}>
-                        {makeLink("/dashboard/dashboard-theme", <SunMoon />, "Dashboard Theme")}
-                        {makeLink("/dashboard/login-devices", <TabletSmartphone />, "Login Devices")}
-                        {makeLink("/dashboard/account-details", <User />, "Account Details")}
-                        {makeLink("/dashboard/support", <Headset />, "Support")}
-                    </div>
-                </ul>
+                {menuGroups.map((group, gi) => (
+                    <ul key={gi}>
+                        <li className={sass.sticky}>
+                            <span className={sass.heading}>{group.heading}</span>
+                        </li>
+                        <div className={sass.group}>
+                            {group.items.map((item, ii) => (
+                                <li key={ii}>
+                                    <Link
+                                        href={item.href}
+                                        onClick={(e) => {
+                                            if (item.href === route.href) {
+                                                e.preventDefault();
+                                                return;
+                                            }
+                                            setRoute({ href: item.href, title: item.label });
+                                        }}
+                                        className={route.href === item.href ? sass.active : ""}
+                                    >
+                                        {routing === item.href ? <Loader className={sass.routing} /> : item.icon}
+                                        <span>{item.label}</span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </div>
+                    </ul>
+                ))}
             </nav>
         </aside>
     )

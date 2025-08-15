@@ -23,7 +23,8 @@ export default function RootLayout({ children }) {
     default: {
       "--base-color": "lch(2.76 0 0)",
       "--text-color": "lch(100 0 0)",
-      "--accent-color": "lch(46 32.1 202.83)"
+      "--accent-color": "lch(46 32.1 202.83)",
+      "--danger-color": "lch(55.28 86.77 21.12)"
     }
   }
   return (
