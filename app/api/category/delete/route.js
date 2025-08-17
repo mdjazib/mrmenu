@@ -1,4 +1,5 @@
 import category from "@/model/category";
+import item from "@/model/item";
 import login from "@/model/login";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
@@ -11,6 +12,7 @@ export async function POST(req) {
         const _id = formdata.get("id");
         const uid = (await login.findOne({ _id: jwt.verify(cookie.get("__mr_session").value, process.env.JWT_KEY).ref })).accountId;
         await category.deleteOne({ _id, uid, fixed: false });
+        await item.deleteMany({ category: _id, uid });
         return NextResponse.json(200);
     } catch (error) {
         return NextResponse.json(401);
