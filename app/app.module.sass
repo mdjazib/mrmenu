@@ -213,6 +213,63 @@ $ubuntu: var(--font-ubuntu)
         main
             width: 100%
             position: relative
+            .deals
+                width: 100%
+                display: grid
+                grid-template-columns: repeat(auto-fill,minmax(300px,1fr))
+                gap: 20px
+                .deal
+                    width: 100%
+                    height: fit-content
+                    @include baseBackground(4)
+                    border-radius: 4px
+                    padding: 20px
+                    border: 1px solid
+                    @include baseBorder(8)
+                    @include flex(flex-start,flex-start,column,15px)
+                    .dheader
+                        width: 100%
+                        @include flex(space-between,center,row,10px)
+                        .col
+                            @include flex(center,flex-end,column,2px)
+                            h3
+                                font-size: 14px
+                            p
+                                font-size: 10px
+                                @include textColor(-30)
+                    .items
+                        @include flex(flex-start,flex-start,column,5px)
+                        width: 100%
+                        .item
+                            @include flex(space-between,center,row,10px)
+                            @include baseBackground(8)
+                            border-radius: 4px
+                            padding: 6px 8px
+                            border: 1px solid
+                            @include baseBorder(12)
+                            @include textColor(-15)
+                            font-size: 14px
+                            width: 100%
+                    .cta
+                        width: 100%
+                        @include flex($g:15px)
+                        .delete
+                            @include dangerColor()
+                        .btn
+                            border-radius: 4px
+                            border: 1px solid
+                            @include baseBorder(12)
+                            @include baseBackground(8)
+                            @include flex()
+                            padding: 10px
+                            width: 100%
+                            cursor: pointer
+                            @include flex($g: 10px)
+                            span
+                                font-size: 12px
+                            svg
+                                width: 14px
+                                height: 14px
             .overlay
                 height: 100%
                 @include baseBackground($a:50%)

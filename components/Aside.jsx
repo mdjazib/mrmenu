@@ -3,12 +3,15 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Logo from '@/app/Logo'
 import {
-    ChefHat, Cookie, Earth, Headset, HeartHandshake, Loader,
-    Palette, PanelLeftClose, QrCode, ReceiptText, Stamp, SunMoon,
-    TabletSmartphone, TvMinimal, User, Wallet
+    ChefHat, Cookie, Headset, HeartHandshake, Loader,
+    LogOut,
+    PanelLeftClose,
+    TvMinimal
 } from 'lucide-react'
 import { useStore } from '@/useStore'
 import { usePathname } from 'next/navigation'
+import { toast } from 'sonner'
+import axios from 'axios'
 
 const Aside = ({ sass }) => {
     const pathname = usePathname();
@@ -33,35 +36,17 @@ const Aside = ({ sass }) => {
         {
             heading: "Home",
             items: [
-                { href: "/dashboard", icon: <TvMinimal />, label: "Dashboard" },
-                { href: "/dashboard/categories", icon: <ChefHat />, label: "Categories" },
-                { href: "/dashboard/items", icon: <Cookie />, label: "Items" },
-                { href: "/dashboard/deals", icon: <HeartHandshake />, label: "Deals" }
-            ]
-        },
-        {
-            heading: "Customization",
-            items: [
-                { href: "/dashboard/brand-settings", icon: <Earth />, label: "Brand Settings" },
-                { href: "/dashboard/menu-templates", icon: <QrCode />, label: "Print QR Templates" },
-                { href: "/dashboard/restaurant-details", icon: <ReceiptText />, label: "Restaurant Details" },
-                { href: "/dashboard/menu-theme", icon: <Palette />, label: "Menu Theme" }
-            ]
-        },
-        {
-            heading: "Billing",
-            items: [
-                { href: "/dashboard/subscription", icon: <Wallet />, label: "Subscription" },
-                { href: "/dashboard/purchase", icon: <Stamp />, label: "Purchase" }
+                { href: "/dashboard", icon: <TvMinimal />, label: "Dashboard", external: false },
+                { href: "/dashboard/categories", icon: <ChefHat />, label: "Categories", external: false },
+                { href: "/dashboard/items", icon: <Cookie />, label: "Items", external: false },
+                { href: "/dashboard/deals", icon: <HeartHandshake />, label: "Deals", external: false }
             ]
         },
         {
             heading: "Settings",
             items: [
-                { href: "/dashboard/dashboard-theme", icon: <SunMoon />, label: "Dashboard Theme" },
-                { href: "/dashboard/login-devices", icon: <TabletSmartphone />, label: "Login Devices" },
-                { href: "/dashboard/account-details", icon: <User />, label: "Account Details" },
-                { href: "/dashboard/support", icon: <Headset />, label: "Support" }
+                { href: "https://wa.me/+923214310717", icon: <Headset />, label: "Support", external: true },
+                { href: "javascript:void(0)", icon: <LogOut />, label: "Logout", external: true }
             ]
         }
     ];
@@ -89,11 +74,45 @@ const Aside = ({ sass }) => {
                                     <Link
                                         href={item.href}
                                         onClick={(e) => {
-                                            if (item.href === route.href) {
+                                            if (routing === "") {
+                                                if (item.external) {
+                                                    if (item.href === "javascript:void(0)") {
+                                                        toast.promise(
+                                                            new Promise((resolve, reject) => {
+                                                                try {
+                                                                    (async () => {
+                                                                        await axios.post("/api/logout");
+                                                                        resolve("You have been logged out successfully.");
+                                                                        setTimeout(() => {
+                                                                            window.location.reload();
+                                                                        }, 2000);
+                                                                    })();
+                                                                } catch (error) {
+                                                                    reject("Logout failed.")
+                                                                }
+                                                            }),
+                                                            {
+                                                                loading: "Logging out...",
+                                                                success: (msg) => msg,
+                                                                error: (msg) => msg,
+                                                            }
+                                                        )
+                                                    } else {
+                                                        window.open(item.href, "_blank");
+                                                    }
+                                                    e.preventDefault();
+                                                    return;
+                                                } else {
+                                                    if (item.href === route.href) {
+                                                        e.preventDefault();
+                                                        return;
+                                                    }
+                                                    setRoute({ href: item.href, title: item.label });
+                                                }
+                                            } else {
                                                 e.preventDefault();
                                                 return;
                                             }
-                                            setRoute({ href: item.href, title: item.label });
                                         }}
                                         className={route.href === item.href ? sass.active : ""}
                                     >
@@ -106,7 +125,7 @@ const Aside = ({ sass }) => {
                     </ul>
                 ))}
             </nav>
-        </aside>
+        </aside >
     )
 }
 
