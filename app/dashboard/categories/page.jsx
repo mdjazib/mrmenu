@@ -55,32 +55,28 @@ const page = () => {
             toast.error("Something went wrong.");
         }
     }
-    const deleteCategory = async (e, id) => {
-        if (e) {
-            toast.error("You can't delete default categories.");
-        } else {
-            try {
-                if (deleting === "") {
-                    setDeleting(id);
-                    const formdata = new FormData();
-                    formdata.append("id", id);
-                    const { data } = await axios.post("/api/category/delete", formdata, {
-                        headers: {
-                            "Content-Type": "multipart/form-data"
-                        }
-                    });
-                    if (data === 200) {
-                        toast.success("Category successfully deleted.");
-                        fetchCategories();
-                    } else {
-                        toast.error("Something went wrong.");
+    const deleteCategory = async (id) => {
+        try {
+            if (deleting === "") {
+                setDeleting(id);
+                const formdata = new FormData();
+                formdata.append("id", id);
+                const { data } = await axios.post("/api/category/delete", formdata, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
                     }
-                    setDeleting("");
+                });
+                if (data === 200) {
+                    toast.success("Category successfully deleted.");
+                    fetchCategories();
+                } else {
+                    toast.error("Something went wrong.");
                 }
-            } catch (error) {
-                toast.error("Something went wrong.");
                 setDeleting("");
             }
+        } catch (error) {
+            toast.error("Something went wrong.");
+            setDeleting("");
         }
     }
     return (
@@ -121,7 +117,21 @@ const page = () => {
                                 <tr key={i}>
                                     <td>{i + 1}</td>
                                     <td>{e.name}</td>
-                                    <td><div className={`${sass.btn} ${!e.default && sass.delete} ${deleting === e.id && sass.loading}`} onClick={() => { deleteCategory(e.default, e.id) }}>{deleting === e.id ? <Loader /> : <Trash />}</div></td>
+                                    <td><div className={`${sass.btn} ${!e.default && sass.delete} ${deleting === e.id && sass.loading}`} onClick={() => {
+                                        if (!e.default) {
+                                            if (deleting === "") {
+                                                const ask = window.prompt(
+                                                    `Are you sure you want to permanently delete the category "${e.name}"?\n\nThis action will also remove all items within this category.\n\nTo confirm, please type the category name below:`
+                                                );
+                                                if (ask === e.name) deleteCategory(e.id)
+                                                else toast.error("Incorrect category name.");
+                                            } else {
+                                                toast.warning("Please wait while another category is deleting.");
+                                            }
+                                        } else {
+                                            toast.error("You can't delete default categories.");
+                                        }
+                                    }}>{deleting === e.id ? <Loader /> : <Trash />}</div></td>
                                 </tr>
                             ))
                         }

@@ -1,11 +1,20 @@
 "use client"
-import { usePathname } from 'next/navigation'
-import React from 'react'
+import { Loader, PlusCircle } from 'lucide-react'
+import sass from '../app.module.sass'
+import React, { useState } from 'react'
+import { useStore } from '@/useStore'
 
 const page = () => {
-    const pathname = usePathname();
+    const { route } = useStore();
+    const [loading, setLoading] = useState(false);
     return (
-        <div>{pathname}</div>
+        <>
+            <div className={sass.content}>
+                <div className={sass.header}>
+                    <h2>{loading && <Loader />} <span>{route.title}</span></h2>
+                </div>
+            </div>
+        </>
     )
 }
 
