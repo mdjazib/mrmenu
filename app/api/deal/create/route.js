@@ -20,8 +20,13 @@ export async function POST(req) {
         if (isExist) {
             return NextResponse.json({ status: 401, msg: "A deal with this name already exists. Please choose a different name." });
         } else {
-            await deal.create({ ...data, uid });
-            return NextResponse.json({ status: 200, msg: "Deal successfully added." });
+            const limit = await deal.countDocuments({ uid });
+            if (limit <= 20) {
+                await deal.create({ ...data, uid });
+                return NextResponse.json({ status: 200, msg: "Deal successfully added." });
+            } else {
+                return NextResponse.json({ status: 401, msg: "You’ve reached the maximum limit of 20 deals." });
+            }
         }
     } catch (error) {
         return NextResponse.json({ status: 401, msg: "Something went wrong." });

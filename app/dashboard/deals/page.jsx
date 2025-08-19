@@ -19,6 +19,7 @@ const page = () => {
     const [loading, setLoading] = useState(true);
     const [name, setName] = useState("");
     const [deals, setDeals] = useState([]);
+    const [deleting, setDeleting] = useState("");
     const newdeal = async (e) => {
         e.preventDefault();
         try {
@@ -84,6 +85,22 @@ const page = () => {
     useEffect(() => {
         fetchDeals();
     }, []);
+    const deleteDeal = async (id) => {
+        try {
+            const formdata = new FormData();
+            formdata.append("id", id);
+            await axios.post("/api/deal/delete", formdata, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+            setDeleting("");
+            fetchDeals();
+        } catch (error) {
+            toast.error("Something went wrong.");
+            setDeleting("");
+        }
+    }
     return (
         <>
             {
@@ -167,7 +184,7 @@ const page = () => {
                                     }
                                 </div>
                                 <div className={sass.cta}>
-                                    <div className={`${sass.btn} ${sass.delete}`}><Trash /><span>Delete</span></div>
+                                    <div className={`${sass.btn} ${sass.delete}`} onClick={() => { if (deleting === "") { setDeleting(e._id); deleteDeal(e._id); } else { toast.warning("Please wait while another deal is deleting.") } }}>{e._id === deleting ? <Loader className={sass.svgloading} /> : <Trash />}<span>Delete</span></div>
                                     <div className={sass.btn}><Pen /><span>Edit</span></div>
                                 </div>
                             </div>
