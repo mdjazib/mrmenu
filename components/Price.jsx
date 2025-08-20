@@ -8,8 +8,10 @@ const Price = ({ number, setPriceInput, limit, priceInput = { label: "", price: 
     const [label, setLabel] = useState("");
     const [_number, setNumber] = useState("");
     useEffect(() => {
-        setLabel(priceInput.label);
-        setNumber(priceInput.price);
+        if (priceInput.label.length) {
+            setLabel(priceInput.label);
+            setNumber(priceInput.price);
+        }
     }, [priceInput]);
     return (
         <div key={number} className={sass.newf}>
@@ -20,7 +22,7 @@ const Price = ({ number, setPriceInput, limit, priceInput = { label: "", price: 
                     setLabel(/^[A-Z0-9]$/.test(value) ? value : "");
                 }}
                 autoComplete='off' />
-            <input type="text" placeholder='Price' name='price' autoComplete='off' value={_number}
+            <input type="text" placeholder='Price' style={{ maxWidth: "100%" }} name='price' autoComplete='off' value={_number}
                 onInput={(e) => {
                     const value = e.target.value.trim().slice(0, 6);
                     setNumber(/^[0-9]*$/.test(value) ? value : "");

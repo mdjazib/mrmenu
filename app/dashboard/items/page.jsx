@@ -162,7 +162,7 @@ const page = () => {
                                 ))
                                 :
                                 <div className={sass.newf}>
-                                    <input type="text" placeholder='Price' name='price' value={_number} autoComplete='off' onInput={(e) => {
+                                    <input type="text" placeholder='Price' style={{ maxWidth: "100%" }} name='price' value={_number} autoComplete='off' onInput={(e) => {
                                         const value = e.target.value.trim().slice(0, 6);
                                         setNumber(/^[0-9]*$/.test(value) ? value : "");
                                     }} />
@@ -199,7 +199,7 @@ const page = () => {
                                     ))
                                     :
                                     <div className={sass.newf}>
-                                        <input type="text" placeholder='Price' name='price' value={_number} autoComplete='off' onInput={(e) => {
+                                        <input type="text" style={{ maxWidth: "100%" }} placeholder='Price' name='price' value={_number} autoComplete='off' onInput={(e) => {
                                             const value = e.target.value.trim().slice(0, 6);
                                             setNumber(/^[0-9]*$/.test(value) ? value : "");
                                         }} />
