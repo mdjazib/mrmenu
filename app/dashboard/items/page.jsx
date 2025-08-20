@@ -185,7 +185,11 @@ const page = () => {
                                 <div className={sass.btn} onClick={() => { setCheckInStock(!checkInStock) }}>{checkInStock && <Check />}</div>
                                 <input type="text" placeholder='Name' name='name' defaultValue={editItemModel.name} autoComplete='off' />
                             </div>
-                            <select name='category' value={editItemModel.cid}>
+                            <select name='category'
+                                value={editItemModel.cid || ""}
+                                onChange={(e) =>
+                                    setEditItemModel((prev) => ({ ...prev, cid: e.target.value }))
+                                }>
                                 {
                                     categories.map((e, i) => (
                                         <option key={i} value={e.id}>{e.name}</option>
@@ -208,7 +212,7 @@ const page = () => {
                             }
                             <input type="submit" value={adding ? "Saving..." : "Save"} />
                         </form>
-                    </div> : <></>
+                    </div > : <></>
             }
             <div ref={boxRef} className={sass.content}>
                 <div className={sass.header}>
