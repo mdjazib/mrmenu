@@ -1,4 +1,5 @@
 import { connection } from "@/lib/db";
+import account from "@/model/account";
 import category from "@/model/category";
 import deal from "@/model/deal";
 import item from "@/model/item";
@@ -8,7 +9,8 @@ export async function GET(req, { params }) {
     try {
         await connection();
         const categories = [];
-        const { id: uid } = await params;
+        const { id: username } = await params;
+        const uid = (await account.findOne({ username }))._id;
         const items = await item.find({ uid });
         for (let i = 0; i < items.length; i++) { if (!categories.includes(items[i].category)) categories.push(items[i].category); }
         const existedCategories = (await category.find({ _id: { $in: categories } }).select("name"));
