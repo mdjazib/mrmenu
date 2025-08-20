@@ -19,17 +19,25 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const defaultTheme = {
+    "--accent-color": "lch(46 32.1 202.83)",
+    "--danger-color": "lch(55.28 86.77 21.12)"
+  }
   const theme = {
-    default: {
+    dark: {
+      ...defaultTheme,
       "--base-color": "lch(2.76 0 0)",
-      "--text-color": "lch(100 0 0)",
-      "--accent-color": "lch(46 32.1 202.83)",
-      "--danger-color": "lch(55.28 86.77 21.12)"
+      "--text-color": "lch(100 0 0)"
+    },
+    light: {
+      ...defaultTheme,
+      "--base-color": "lch(78 8.18 101.57)",
+      "--text-color": "lch(13 0 0)"
     }
   }
   return (
     <html lang="en">
-      <body className={`${rubik.variable} ${ubuntu.variable}`} style={theme.default}>
+      <body className={`${rubik.variable} ${ubuntu.variable}`} style={theme.dark}>
         <Toaster position="top-center" richColors />
         {children}
       </body>

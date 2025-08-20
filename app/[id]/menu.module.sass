@@ -1,0 +1,252 @@
+$rubik: var(--font-rubik)
+$ubuntu: var(--font-ubuntu)
+
+@mixin flex($j: center,$a: center,$d: row,$g: 0px)
+    display: flex
+    justify-content: $j
+    align-items: $a
+    flex-direction: $d
+    gap: $g
+
+@mixin baseBackground($l:0,$a:100%)
+    background-color: lch(from var(--base-color) calc(l + $l) c h / $a) !important
+
+@mixin baseFill($l:0)
+    fill: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin baseStroke($l:0)
+    stroke: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin baseColor($l:0)
+    color: lch(from var(--base-color) calc(l + $l) c h)
+
+@mixin baseBorder($l:0)
+    border-color: lch(from var(--base-color) calc(l + $l) c h) !important
+
+@mixin textBackground($l:0)
+    background-color: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin textFill($l:0)
+    fill: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin textStroke($l:0)
+    stroke: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin textColor($l:0)
+    color: lch(from var(--text-color) calc(l + $l) c h) !important
+
+@mixin textBorder($l:0)
+    border-color: lch(from var(--text-color) calc(l + $l) c h)
+
+@mixin accentBackground($l:0)
+    background-color: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentFill($l:0)
+    fill: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentStroke($l:0)
+    stroke: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentColor($l:0)
+    color: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin accentBorder($l:0)
+    border-color: lch(from var(--accent-color) calc(l + $l) c h)
+
+@mixin dangerColor($l:0)
+    color: lch(from var(--danger-color) calc(l + $l) c h) !important
+
+@mixin dangerBackground($l:0,$a:100%)
+    background-color: lch(from var(--danger-color) calc(l + $l) c h / $a) !important
+
+.mrmenu
+    height: 100svh
+    width: 100%
+    @include baseBackground()
+    .splash
+        width: 100%
+        height: 100%
+        position: fixed
+        top: 0px
+        left: 0px
+        @include flex()
+        .doodles
+            transition: .2s ease
+            position: fixed
+            top: 0px
+            left: 0px
+            width: 100%
+            height: 100%
+            opacity: .4
+            @media (max-width:600px)
+                opacity: .6
+        > div
+            width: 92px !important
+            height: 100px !important
+            svg
+                path
+                    @include textStroke()
+                    @include textFill()
+    .mr
+        height: calc(100svh - 60px)
+        header
+            width: 100vw
+            margin-bottom: 10px
+            height: 50px
+            border-bottom: 1px solid
+            @include baseBorder(3)
+            padding: 0px 12px
+            @include flex(space-between,center,row,10px)
+            .col
+                @include flex(flex-start,center,row,10px)
+                width: 100%
+                .logo
+                    @include textFill()
+                    width: 18px
+                    height: 18px
+                h2
+                    @include textColor()
+                    font-size: 14px
+            .btn
+                border: 1px solid
+                min-width: 26px
+                height: 26px
+                @include baseBorder(10)
+                border-radius: 100px
+                @include flex()
+                cursor: pointer
+                svg
+                    width: 12.4px
+                    height: 12.4px
+                    @include textColor(-50)
+    .menu
+        width: 100%
+        height: 100%
+        scroll-snap-type: x mandatory
+        overflow-x: overlay
+        @include flex(flex-start,flex-start,row,1px)
+        @include baseBackground(3)
+        &::-webkit-scrollbar
+            display: none
+        .page
+            min-width: 100vw
+            height: 100%
+            @include baseBackground()
+            scroll-snap-align: center
+            overflow-y: overlay
+            &::-webkit-scrollbar
+                display: none
+        .main
+            @include flex(flex-start,flex-start,column,10px)
+            padding: 0px 10px 10px 10px
+            .category
+                width: 100%
+                .header
+                    transition: .2s ease
+                    position: sticky
+                    top: 0px
+                    width: 100%
+                    z-index: 2
+                    @include baseBackground(2)
+                    border-radius: 5px
+                    @include textColor(-10)
+                    @include flex(space-between,center,row,10px)
+                    padding: 10px
+                    h3
+                        font-size: 16px
+                table
+                    border-radius: 0px 0px 10px 10px
+                    tbody
+                        width: 100%
+                        tr
+                            width: 100%
+                            &:nth-last-child(1)
+                                border-radius: 0px 0px 5px 5px
+                            td
+                                text-align: left
+                                padding: 14px
+                                overflow: overlay
+                                max-width: 100px
+                                &::-webkit-scrollbar
+                                    display: none
+                .items
+                    transition: .2s ease
+                    width: 100%
+                    @include baseBackground(0)
+                    overflow: hidden
+                    border-radius: 10px
+                    display: none
+                    .deals
+                        width: 100%
+                        border-radius: 10px
+                        overflow: hidden
+                        @include flex(flex-start,flex-start,column,10px)
+                        .deal
+                            padding: 10px
+                            width: 100%
+                            @include baseBackground(2)
+                            border-radius: 4px
+                            @include flex(flex-start,flex-start,column,8px)
+                            table
+                                width: 100%
+                                border-radius: 4px
+                                @include baseBorder(6)
+                                @include baseBackground(6)
+                                tbody
+                                    width: 100%
+                                    tr
+                                        &:nth-child(1)
+                                            td
+                                                &:nth-child(1)
+                                                    border-top-left-radius: 4px
+                                                &:nth-last-child(1)
+                                                    border-top-right-radius: 4px
+                                        &:nth-last-child(1)
+                                            td
+                                                &:nth-child(1)
+                                                    border-bottom-left-radius: 4px
+                                                &:nth-last-child(1)
+                                                    border-bottom-right-radius: 4px
+                                        td
+                                            @include baseBackground(2)
+                                            @include textColor(-40)
+                            .iheader
+                                width: 100%
+                                @include textColor(-10)
+                                @include flex(space-between,center,row,10px)
+                                h2
+                                    font-size: 16px
+                                .col
+                                    @include flex(center,flex-end,column,2px)
+                                    @include textColor(-20)
+                                    p
+                                        @include textColor(-40)
+                                        font-size: 10px
+                    .row
+                        width: 100%
+                        @include baseBackground(1)
+                        @include textColor(-20)
+                        font-size: 14px
+                        position: relative
+                        overflow-y: overlay
+                        &::-webkit-scrollbar
+                            display: none
+                        .name
+                            min-width: max-content
+                        .out
+                            width: 12px
+                            height: 12px
+                            @include dangerColor()
+                        .price
+                            @include textColor(-50)
+                            b
+                                margin-right: 5px
+                        .flex
+                            @include flex(flex-start,center,row,10px)
+            .open
+                .header
+                    @include baseBackground(6)
+                    border-radius: 5px
+                    margin-bottom: 10px
+                .items
+                    display: table

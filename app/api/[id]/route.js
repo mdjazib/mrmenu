@@ -15,7 +15,6 @@ export async function GET(req, { params }) {
         const categoryIds = [...new Set(items.map(i => i.category?.toString()))];
         const categoriesData = await category.find({ _id: { $in: categoryIds } }).select("name");
         const categoryMap = Object.fromEntries(categoriesData.map(c => [c._id.toString(), c.name]));
-        const existedCategories = categoriesData.map(e => e.name);
         for (let i = 0; i < deals.length; i++) {
             deals[i].uid = undefined;
             deals[i].slug = undefined;
@@ -34,7 +33,16 @@ export async function GET(req, { params }) {
             items[j]._doc.__v = undefined;
             items[j].category = categoryMap[items[j].category?.toString()] || null;
         }
-        return NextResponse.json({ deals, existedCategories, items });
+        const groupingItems = items.reduce((acc, item) => {
+            let group = acc.find(g => g.category === item.category);
+            if (group) {
+                group.items.push(item);
+            } else {
+                acc.push({ category: item.category, items: [item] });
+            }
+            return acc;
+        }, []);
+        return NextResponse.json({ deals, items: groupingItems });
     } catch (error) {
         return NextResponse.json({ status: 401, msg: "Something went wrong" });
     }

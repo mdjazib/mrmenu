@@ -213,6 +213,50 @@ $ubuntu: var(--font-ubuntu)
         main
             width: 100%
             position: relative
+            .qrcode
+                width: 100%
+                .qrholder
+                    @include baseBackground(4)
+                    border: 1px solid
+                    @include baseBorder(8)
+                    padding: 15px
+                    border-radius: 10px
+                    @include flex(flex-start,flex-start,column,10px)
+                    width: max-content
+                    @media (max-width:600)
+                        width: 100%
+                    .qr
+                        @include flex()
+                        width: 100%
+                    p
+                        font-size: 12px
+                        text-align: center
+                        width: 100%
+                        @include textColor(-40)
+                    .col
+                        @include baseBackground(8)
+                        border-radius: 5px
+                        @include flex(space-between,center,row,5px)
+                        width: 100%
+                        padding: 10px
+                        select
+                            width: 100%
+                            background-color: transparent
+                            appearance: none
+                            border: none
+                            outline: none
+                            padding: 10px
+                            cursor: pointer
+                            @include textColor(-30)
+                        button
+                            @include baseBackground(12)
+                            @include textColor()
+                            padding: 10px
+                            border-radius: 5px
+                            border: 1px solid
+                            @include baseBorder(20)
+                            font-size: 12px
+                            cursor: pointer
             .deals
                 width: 100%
                 column-count: 3
