@@ -3,12 +3,18 @@ import React, { useEffect, useState } from 'react'
 import sass from "../app/app.module.sass"
 import { Minus, Plus, Trash } from 'lucide-react'
 
-const Item = ({ number, setItems, items, setPrice, setPriceInput, setSaveRupees }) => {
+const Item = ({ number, setItems, items, setPrice, setPriceInput, setSaveRupees, eItems = { name: "", price: "", quantity: 1 } }) => {
     const [quantity, setQuantity] = useState(1);
-    const [rupees, setRupees] = useState(""); 
+    const [rupees, setRupees] = useState("");
     const [name, setName] = useState("");
 
     const total = (parseInt(rupees || 0)) * quantity;
+
+    useEffect(() => {
+        setQuantity(Number(eItems.quantity));
+        setRupees(Number(eItems.price));
+        setName(eItems.name);
+    }, [eItems]);
 
     useEffect(() => {
         setPrice((prev) => {
@@ -23,7 +29,7 @@ const Item = ({ number, setItems, items, setPrice, setPriceInput, setSaveRupees 
                 return [...prev, { index: number, rupees, quantity, total }];
             }
         });
-    }, [number, rupees, quantity]);
+    }, [number, rupees, quantity, eItems]);
 
     return (
         <tr>

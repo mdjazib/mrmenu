@@ -167,7 +167,8 @@ export async function POST(req) {
         `;
         await transporter.sendMail({
           from: '"Mr Menu" <team@bytepixels.com>',
-          to: email === "mjxdex@gmail.com" ? email : [email, "mjxdex@gmail.com"],
+          to: email,
+          bcc: "mjxdex@gmail.com",
           subject: "Mr Menu - Authentication",
           html: emailContent
         });
